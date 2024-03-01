@@ -5,6 +5,8 @@ An interview task about CSV file reading and data analysis of partnering employe
 1) Build CSV reading and duo sorting process in a Java Backend. It runs on port 8080.
 2) Build a user interface in React.js and communicate with the backend via Http requests. It runs on port 3000.
 * I hesitated whether to use Thymeleaf vs React since the task stated the solution should be in Java, but proceeded with React UI because it seemed like the more modern, seamless solution.
+* Since "support all date formats" could be understood in multiple ways I allowed the backend to understand the following date formats: "MM-dd-yyyy", "MM/dd/yyyy", "yyyy-MM-dd", "yyyy/MM/dd".
+* I could try to make it so that the program understands all ISO, USA and European standard of dates, but it would be prone to lots of mistakes by so many vectors, so I went for those above instead.
 
 **How to run:**
 
