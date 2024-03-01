@@ -1,0 +1,45 @@
+.form-container {
+  /* Base styles */
+  display: flex; /* Arrange elements horizontally */
+  align-items: center; /* Vertically align elements */
+  justify-content: space-between; /* Distribute elements evenly */
+  margin: 10px auto; /* Add margin for spacing */
+
+  /* Modern styling */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle box-shadow */
+  border-radius: 5px; /* Rounded corners */
+}
+
+.form-input {
+  /* Base styles */
+  padding: 10px 20px; /* Consistent padding */
+  border: none; /* Remove default border */
+  font-size: 16px; /* Consistent font size */
+
+  /* Modern styling */
+  background-color: #f5f5f5; /* Light background color */
+  color: #333; /* Dark text color */
+  outline: none; /* Remove browser outline */
+  cursor: pointer; /* Indicate clickable element */
+}
+
+.form-input[type="file"] {
+  /* Hide the default file input */
+  display: none;
+}
+
+.form-button {
+  /* Base styles */
+  padding: 10px 20px; /* Consistent padding */
+  border: none; /* Remove default border */
+  font-size: 16px; /* Consistent font size */
+  background-color: #38a3a5; /* Accent color for button */
+  color: #fff; /* White text for contrast */
+  cursor: pointer; /* Indicate clickable element */
+  transition: all 0.2s ease-in-out; /* Smooth transition on hover */
+}
+
+.form-button:hover {
+  /* Hover effect */
+  background-color: #2980b9; /* Darker shade on hover */
+}

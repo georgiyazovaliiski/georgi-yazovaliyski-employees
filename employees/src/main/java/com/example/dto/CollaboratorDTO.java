@@ -6,12 +6,19 @@ import com.example.model.CollaborationDuration;
 import com.example.model.EmployeePair;
 
 public class CollaboratorDTO {
+    String ErrorMessage;
     EmployeePair Employees;
     CollaborationDuration[] Collaborations;
 
     public CollaboratorDTO(EmployeePair Employees, TreeSet<CollaborationDuration> Collaborations) {
         this.Employees = Employees;
         this.Collaborations = Collaborations.toArray(new CollaborationDuration[Collaborations.size()]);
+    }
+
+    public CollaboratorDTO(String ErrorMessage) {
+        this.Employees = null;
+        this.Collaborations = null;
+        this.ErrorMessage = ErrorMessage;
     }
 
     public EmployeePair getEmployees() {
@@ -28,6 +35,10 @@ public class CollaboratorDTO {
 
     public void setCollaborations(CollaborationDuration[] Collaborations) {
         this.Collaborations = Collaborations;
+    }
+
+    public String getErrorMessage() {
+        return this.ErrorMessage;
     }
 
     @Override

@@ -1,0 +1,37 @@
+table {
+    /* Base styles */
+    width: 100%; /* Ensure full width within container */
+    border-collapse: collapse; /* Remove default table borders */
+  
+    /* Modern styling */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle box-shadow */
+    border-radius: 5px; /* Rounded corners */
+    overflow: hidden; /* Clip content if exceeding table bounds */
+  
+    /* Typography */
+    font-family: sans-serif; /* Modern font choice */
+    font-size: 16px; /* Readable font size */
+    color: #333; /* Dark text color */
+  }
+  
+   th,
+   td {
+    /* Base styles */
+    padding: 10px 20px; /* Consistent cell padding */
+    border: none; /* Remove default cell borders */
+    text-align: left; /* Left-align content by default */
+  
+    /* Modern styling */
+    background-color: #f5f5f5; /* Light background color */
+    &:hover {
+      background-color: #eee; /* Hover effect */
+    }
+  }
+  
+  thead th {
+    /* Header styling */
+    background-color: #e0e0e0; /* Slightly darker background */
+    font-weight: bold; /* Bold text */
+    text-transform: uppercase; /* Uppercase text for emphasis */
+  }
+  

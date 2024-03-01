@@ -12,27 +12,38 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import com.example.dto.CollaboratorDTO;
+import com.example.exception.CSVReadException;
 import com.example.model.CollaborationDuration;
 import com.example.model.EmployeePair;
 import com.example.model.EmployeeProject;
 import com.example.util.DateIntersector;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
+
 import org.springframework.stereotype.Component;
 
 @Component
 public class CSVProcessorImpl implements CSVProcessor {
     public CollaboratorDTO Process(InputStream FileInformation) {
-        TreeMap<Integer, TreeSet<EmployeeProject>> ProjectTeams = GetProjectTeams(FileInformation);
-        return FindLongestDuo(ProjectTeams);
+        try {
+            TreeMap<Integer, TreeSet<EmployeeProject>> ProjectTeams = GetProjectTeams(FileInformation);
+            return FindLongestDuo(ProjectTeams);
+        } catch (CSVReadException e) {
+            return new CollaboratorDTO("CSV File reading failed: " + e.getMessage());
+        }
     }
 
-    private TreeMap<Integer, TreeSet<EmployeeProject>> GetProjectTeams(InputStream FileInformation) {
+    private TreeMap<Integer, TreeSet<EmployeeProject>> GetProjectTeams(InputStream FileInformation)
+            throws CSVReadException {
         TreeMap<Integer, TreeSet<EmployeeProject>> ProjectTeams = new TreeMap<>();
 
         try (CSVReader reader = new CSVReader(new InputStreamReader(FileInformation))) {
             String[] RowFields;
             while ((RowFields = reader.readNext()) != null) {
+                if (RowFields.length != 4) {
+                    throw new IllegalArgumentException("Wrong field count. Data: " + String.join(", ", RowFields));
+                }
+
                 String EmpIDRaw = RowFields[0].trim();
                 String ProjectIDRaw = RowFields[1].trim();
                 String DateFrom = RowFields[2].trim();
@@ -79,11 +90,12 @@ public class CSVProcessorImpl implements CSVProcessor {
                     ProjectTeams.putIfAbsent(ProjectID, team);
 
                 } catch (DateTimeParseException e) {
-                    throw new IllegalArgumentException("Could not parse date: " + e.getMessage());
+                    throw new IllegalArgumentException(
+                            "Could not parse date period [ " + DateFrom + " : " + DateTo + " ]");
                 }
             }
-        } catch (CsvValidationException | IOException e) {
-            System.out.println(e.getMessage());
+        } catch (CsvValidationException | IOException | IllegalArgumentException e) {
+            throw new CSVReadException(e.getMessage());
         }
         return ProjectTeams;
     }
