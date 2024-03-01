@@ -17,7 +17,7 @@ An interview task about CSV file reading and data analysis of partnering employe
 
 **Go back to the root of the repository**
 
-4) cd ..
+4) open another terminal in the cloned repository
 
 **Running the frontend**
 

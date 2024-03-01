@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.DateTimeParseException;
 import java.util.Map;
 import java.util.HashMap;
@@ -36,6 +37,15 @@ public class CSVProcessorImpl implements CSVProcessor {
     private TreeMap<Integer, TreeSet<EmployeeProject>> GetProjectTeams(InputStream FileInformation)
             throws CSVReadException {
         TreeMap<Integer, TreeSet<EmployeeProject>> ProjectTeams = new TreeMap<>();
+
+        String[] patterns = new String[] { "MM-dd-yyyy", "MM/dd/yyyy", "yyyy-MM-dd", "yyyy/MM/dd" };
+
+        DateTimeFormatterBuilder FormatterBuilder = new DateTimeFormatterBuilder();
+        for (String pattern : patterns) {
+            FormatterBuilder = FormatterBuilder.appendOptional(DateTimeFormatter.ofPattern(pattern));
+        }
+
+        DateTimeFormatter Formatter = FormatterBuilder.toFormatter();
 
         try (CSVReader reader = new CSVReader(new InputStreamReader(FileInformation))) {
             String[] RowFields;
@@ -71,8 +81,6 @@ public class CSVProcessorImpl implements CSVProcessor {
                 } catch (NumberFormatException e) {
                     throw new NumberFormatException("Project ID " + ProjectIDRaw + " is incorrect");
                 }
-
-                DateTimeFormatter Formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
                 LocalDate LocalDateFrom;
                 LocalDate LocalDateTo = LocalDate.now();
@@ -135,8 +143,6 @@ public class CSVProcessorImpl implements CSVProcessor {
                     TreeSet<CollaborationDuration> Collaborations = CollaborationLeaderboard.get(EmployeePair);
                     Collaborations.add(CollaborationDuration);
 
-                    // TODO: Think whether you have time and energy to display equal lengths of
-                    // different pairs
                     if (LongestCollaboration < PeriodWorkedTogether) {
                         LongestCollaboration = PeriodWorkedTogether;
                         LongestCollaborators = new EmployeePair(
@@ -149,9 +155,8 @@ public class CSVProcessorImpl implements CSVProcessor {
             }
         }
 
-        CollaboratorDTO dao = new CollaboratorDTO(LongestCollaborators,
+        return new CollaboratorDTO(LongestCollaborators,
                 CollaborationLeaderboard.get(LongestCollaborators));
-        return dao;
     }
 
     private TreeSet<CollaborationDuration> EmptyCollaborations() {

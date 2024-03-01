@@ -24,24 +24,21 @@ public class CollaborationControllerImpl implements CollaborationController {
         this.CSVProcessor = CSVProcessor;
     }
 
-    @GetMapping("/employees")
-    public String ProcessCSV(Model model) {
-        return "employees";
-    }
-
     @PostMapping("/employees")
     public ResponseEntity<CollaboratorDTO> ProcessCSV(@RequestParam("file") MultipartFile file) {
         String fileName = file.getOriginalFilename();
         String[] fileNameParts = fileName.split("\\.");
 
         if (fileNameParts.length != 2 || !fileNameParts[fileNameParts.length - 1].equals("csv") || file.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new CollaboratorDTO("File is either empty, wrong format or fraudulent. Try another file."));
         }
 
         try {
             return ResponseEntity.ok(CSVProcessor.Process(file.getInputStream()));
         } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new CollaboratorDTO("Unexpected error: " + e.getMessage()));
         }
     }
 }
