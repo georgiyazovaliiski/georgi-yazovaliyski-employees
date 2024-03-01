@@ -16,6 +16,7 @@ An interview task about CSV file reading and data analysis of partnering employe
 
 2) cd .\employees\
 3) mvn clean install
+4) mvn spring-boot:start
 
 **Go back to the root of the repository**
 
